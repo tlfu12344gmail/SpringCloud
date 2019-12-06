@@ -24,6 +24,15 @@ public interface IAuthService {
     boolean ignoreAuthentication(String url);
 
     /**
+     * 判断url是否在忽略的范围内
+     * 只要是配置中的开头，即返回true
+     *
+     * @param url
+     * @return
+     */
+    boolean ignoreZaCa(String url);
+
+    /**
      * 查看签权服务器返回结果，有权限返回true
      *
      * @param authResult

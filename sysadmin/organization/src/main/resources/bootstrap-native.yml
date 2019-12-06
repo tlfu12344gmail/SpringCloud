@@ -1,15 +1,14 @@
 server:
-  port: ${SERVER_PORT:8443}
+  port: ${SERVER_PORT:8010}
 spring:
   application:
-    name: gateway-web
+    name: organization
   cloud:
     nacos:
       discovery:
         server-addr: ${REGISTER_HOST:localhost}:${REGISTER_PORT:8848}
+        namespace: '2c07c0bb-8f9a-462d-8f24-3532981c8ec5'
       config:
         server-addr: ${REGISTER_HOST:localhost}:${REGISTER_PORT:8848}
         file-extension: yml
-    sentinel:
-      transport:
-        dashboard: ${SENTINEL_DASHBOARD_HOST:localhost}:${SENTINEL_DASHBOARD_PORT:8021}
+        namespace: '2c07c0bb-8f9a-462d-8f24-3532981c8ec5'

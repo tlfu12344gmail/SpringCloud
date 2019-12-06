@@ -11,6 +11,10 @@ public class ApplicationTests {
     @Test
     public void contextLoads() {
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        System.out.println(passwordEncoder.encode("test_secret"));
+        String result = passwordEncoder.encode("test_secret");
+        System.out.println(result);
+
+        System.out.println(passwordEncoder.matches("test_secret","$2a$10$2szDKjvKHJCWE6YQNznogOeQF3USZHmCYj1fG7YbfK.vnTgNKLzri"));
+        System.out.println(passwordEncoder.matches("test_secret",result));
     }
 }

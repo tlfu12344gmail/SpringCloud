@@ -4,6 +4,8 @@ import com.springboot.cloud.auth.authentication.service.IAuthenticationService;
 import com.springboot.cloud.common.core.entity.vo.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,7 +20,7 @@ public class AuthenticationController {
     IAuthenticationService authenticationService;
 
     @RequestMapping(method = RequestMethod.POST, value = "/auth/permission")
-    public Result decide(@RequestParam String url, @RequestParam String method, HttpServletRequest request) {
+    public Result decide(@RequestHeader(HttpHeaders.AUTHORIZATION) String authentication,@RequestParam String url, @RequestParam String method, HttpServletRequest request) {
         boolean decide = authenticationService.decide(new HttpServletRequestAuthWrapper(request, url, method));
         return Result.success(decide);
     }

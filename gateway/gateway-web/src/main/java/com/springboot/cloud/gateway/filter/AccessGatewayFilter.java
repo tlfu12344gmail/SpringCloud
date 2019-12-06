@@ -48,8 +48,9 @@ public class AccessGatewayFilter implements GlobalFilter {
         String method = request.getMethodValue();
         String url = request.getPath().value();
         log.debug("url:{},method:{},headers:{}", url, method, request.getHeaders());
+
         //不需要网关签权的url
-        if (authService.ignoreAuthentication(url)) {
+        if (authService.ignoreZaCa(url)) {
             return chain.filter(exchange);
         }
         // 如果请求未携带token信息, 直接跳出
@@ -57,6 +58,11 @@ public class AccessGatewayFilter implements GlobalFilter {
             log.debug("url:{},method:{},headers:{}, 请求未携带token信息", url, method, request.getHeaders());
             return unauthorized(exchange);
         }
+
+        if(authService.ignoreAuthentication(url)){
+            return chain.filter(exchange);
+        }
+
         //调用签权服务看用户是否有权限，若有权限进入下一个filter
         if (authService.hasPermission(authentication, url, method)) {
             ServerHttpRequest.Builder builder = request.mutate();

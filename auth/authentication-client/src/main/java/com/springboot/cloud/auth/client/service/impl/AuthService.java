@@ -1,5 +1,6 @@
 package com.springboot.cloud.auth.client.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.springboot.cloud.auth.client.provider.AuthProvider;
 import com.springboot.cloud.auth.client.service.IAuthService;
 import com.springboot.cloud.common.core.entity.vo.Result;
@@ -40,6 +41,9 @@ public class AuthService implements IAuthService {
      */
     @Value("${gate.ignore.authentication.startWith}")
     private String ignoreUrls = "/oauth";
+    @Value("${gate.ignore.zaca.startWith}")
+    private String ignoreZaCaUrls = "";
+
     /**
      * jwt验签
      */
@@ -54,6 +58,12 @@ public class AuthService implements IAuthService {
     public boolean ignoreAuthentication(String url) {
         return Stream.of(this.ignoreUrls.split(",")).anyMatch(ignoreUrl -> url.startsWith(StringUtils.trim(ignoreUrl)));
     }
+
+    @Override
+    public boolean ignoreZaCa(String url) {
+        return Stream.of(this.ignoreZaCaUrls.split(",")).anyMatch(ignoreUrl -> url.startsWith(StringUtils.trim(ignoreUrl)));
+    }
+
 
     @Override
     public boolean hasPermission(Result authResult) {
@@ -80,6 +90,10 @@ public class AuthService implements IAuthService {
         try {
             Jwt jwt = getJwt(authentication);
             jwt.verifySignature(verifier);
+            Long time = JSONObject.parseObject(jwt.getClaims()).getLong("exp");
+            if(time.longValue()<System.currentTimeMillis()){
+                return invalid;
+            }
             invalid = Boolean.FALSE;
         } catch (InvalidSignatureException | IllegalArgumentException ex) {
             log.warn("user token has expired or signature error ");

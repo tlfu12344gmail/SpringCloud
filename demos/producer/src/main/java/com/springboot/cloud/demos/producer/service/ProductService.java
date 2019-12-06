@@ -49,7 +49,7 @@ public class ProductService extends ServiceImpl<ProductMapper, Product> implemen
     @Override
     public List<Product> query(ProductQueryParam productQueryParam) {
         QueryWrapper<Product> queryWrapper = productQueryParam.build();
-        queryWrapper.eq("name", productQueryParam.getName());
+        queryWrapper.e.eq("name", productQueryParam.getName());
         return this.list(queryWrapper);
     }
 }
