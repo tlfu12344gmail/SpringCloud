@@ -29,13 +29,18 @@ public class SwaggerProvider implements SwaggerResourcesProvider {
                 .forEach(routeDefinition -> routeDefinition.getPredicates().stream()
                         .filter(predicateDefinition -> "Path".equalsIgnoreCase(predicateDefinition.getName()))
                         .peek(predicateDefinition -> log.debug("路由配置参数：{}", predicateDefinition.getArgs()))
-                        .forEach(predicateDefinition -> resources.add(swaggerResource(routeDefinition.getId(),
-                                predicateDefinition.getArgs().get("pattern").replace("/**", API_URI)))));
+                        .forEach(predicateDefinition -> {
+                            if(!routeDefinition.getId().contains("-server")){
+                                resources.add(swaggerResource(routeDefinition.getId(),
+                                    predicateDefinition.getArgs().get("pattern").replace("/**", API_URI)));
+                            }
+                           }));
         log.debug("resources:{}", resources);
         return resources;
     }
 
     private SwaggerResource swaggerResource(String name, String location) {
+
         SwaggerResource swaggerResource = new SwaggerResource();
         swaggerResource.setName(name);
         swaggerResource.setLocation(location);

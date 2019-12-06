@@ -61,7 +61,14 @@ public class AuthService implements IAuthService {
 
     @Override
     public boolean ignoreZaCa(String url) {
-        return Stream.of(this.ignoreZaCaUrls.split(",")).anyMatch(ignoreUrl -> url.startsWith(StringUtils.trim(ignoreUrl)));
+        return Stream.of(this.ignoreZaCaUrls.split(",")).anyMatch(ignoreUrl ->
+        {
+            if (ignoreUrl.startsWith("*")) {
+              return url.contains(ignoreUrl.replaceAll("\\*",""));
+            } else {
+             return  url.startsWith(StringUtils.trim(ignoreUrl));
+            }
+        });
     }
 
 
