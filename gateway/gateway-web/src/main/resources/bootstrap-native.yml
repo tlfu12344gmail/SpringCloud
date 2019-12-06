@@ -12,6 +12,18 @@ spring:
         server-addr: ${REGISTER_HOST:localhost}:${REGISTER_PORT:8848}
         file-extension: yml
         namespace: '2c07c0bb-8f9a-462d-8f24-3532981c8ec5'
+        ext-config[0]:
+          data-id: mysql.yml
+          group: PUBLIC
+        ext-config[1]:
+          data-id: redis.yml
+          group: PUBLIC
+        ext-config[2]:
+          data-id: rabbitmq.yml
+          group: PUBLIC
 #    sentinel:
 #      transport:
 #        dashboard: ${SENTINEL_DASHBOARD_HOST:localhost}:${SENTINEL_DASHBOARD_PORT:8021}
+config:
+  mysql:
+    name: sc_gateway
