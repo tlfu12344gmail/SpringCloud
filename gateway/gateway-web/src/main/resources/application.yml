@@ -73,6 +73,8 @@ jetcache:
 gate:
   ignore:
     authentication:
+      startWith:
+    zaca:
       startWith: /oauth,/open,/v2/api-docs
 
 management:

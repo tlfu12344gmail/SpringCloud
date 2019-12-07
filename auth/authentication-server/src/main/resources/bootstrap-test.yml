@@ -1,0 +1,29 @@
+server:
+  port: 8001
+spring:
+  application:
+    name: authentication-server
+  cloud:
+    nacos:
+      discovery:
+        server-addr: ${REGISTER_HOST:192.168.1.8}:${REGISTER_PORT:8848}
+        namespace: '4687be4f-57fe-4078-bc6b-0462c4116275'
+      config:
+        server-addr: ${REGISTER_HOST:192.168.1.8}:${REGISTER_PORT:8848}
+        file-extension: yml
+        namespace: '4687be4f-57fe-4078-bc6b-0462c4116275'
+        ext-config[0]:
+          data-id: mysql.yml
+          group: PUBLIC
+        ext-config[1]:
+          data-id: redis.yml
+          group: PUBLIC
+        ext-config[2]:
+          data-id: rabbitmq.yml
+          group: PUBLIC
+#    sentinel:
+#      transport:
+#        dashboard: ${SENTINEL_DASHBOARD_HOST:localhost}:${SENTINEL_DASHBOARD_PORT:8021}
+config:
+  mysql:
+    name: sc_auth
